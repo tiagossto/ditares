@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <meta name="theme-color" content="#F7F1E6" />
+    <meta name="description" content="Uma adivinha popular por dia." />
+    <title>Adivinha o Ditado</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <!-- Caderno de Provérbios: menu editorial, uma adivinha diária e navegação compacta. -->
+    <main class="app-shell">
+      <section class="screen home-screen" id="homeScreen" aria-labelledby="homeTitle">
+        <div class="home-rule" aria-hidden="true"></div>
+        <div class="home-copy">
+          <p class="home-kicker">Uma página por dia</p>
+          <h1 id="homeTitle">Adivinha<br /><em>o Ditado</em></h1>
+          <p class="home-intro">A sabedoria popular chega em pequenas doses. Completa a frase de hoje e mantém a tradição em jogo.</p>
+        </div>
+        <div class="home-actions">
+          <button class="today-button" id="todayButton" type="button" disabled>
+            <span>Adivinha do dia</span>
+            <span class="button-arrow" aria-hidden="true">→</span>
+          </button>
+          <div class="secondary-actions">
+            <button class="menu-button" id="archiveButton" type="button">Calendário</button>
+            <button class="menu-button" id="settingsButton" type="button">Definições</button>
+          </div>
+          <button class="support-button" id="supportButton" type="button">Apoiar o projeto</button>
+        </div>
+      </section>
+
+      <section class="screen game-sheet" id="gameScreen" hidden aria-label="Adivinha diária">
+        <div class="paper-kicker" aria-hidden="true">
+          <span>Palavra em falta</span>
+          <span id="editionDate">Edição especial</span>
+        </div>
+        <button class="back-button" id="backHomeButton" type="button">← Menu inicial</button>
+        <div class="game-hud" id="gameHud">
+          <div class="hud-item lives-item">
+            <span class="hud-label">Vidas</span>
+            <div class="life-dots" id="livesDisplay" aria-label="Tens 3 vidas de 3">
+              <span class="life-dot is-active" aria-hidden="true"></span>
+              <span class="life-dot is-active" aria-hidden="true"></span>
+              <span class="life-dot is-active" aria-hidden="true"></span>
+            </div>
+          </div>
+          <div class="hud-divider" aria-hidden="true"></div>
+          <div class="hud-item score-item">
+            <span class="hud-label">Pontuação</span>
+            <strong id="scoreValue" aria-live="polite">0</strong>
+          </div>
+        </div>
+        <div class="round-content" id="roundContent">
+          <blockquote class="proverb" id="proverb" aria-live="polite">Um instante, estamos a abrir o caderno.</blockquote>
+          <form class="answer-form" id="answerForm" novalidate>
+            <label class="sr-only" for="answerInput">A palavra que falta</label>
+            <input id="answerInput" name="answer" type="text" inputmode="text" autocomplete="off" autocapitalize="sentences" placeholder="A palavra que falta…" aria-describedby="feedback" disabled required />
+            <button id="submitButton" type="submit" disabled>Verificar</button>
+          </form>
+          <p class="feedback" id="feedback" role="status" aria-live="polite"></p>
+        </div>
+        <section class="game-over" id="gameOver" hidden aria-labelledby="gameOverTitle">
+          <span class="eyebrow">Fim de jogo</span>
+          <h2 id="gameOverTitle">A sabedoria<br /><em>fica para a próxima.</em></h2>
+          <p class="final-label">Pontuação final</p>
+          <strong class="final-score" id="finalScore">0</strong>
+          <button class="restart-button" id="restartButton" type="button">Jogar de novo</button>
+        </section>
+        <aside class="editorial-margin" aria-label="Nota editorial">
+          <span class="margin-label">Nota de margem</span>
+          <p>A palavra certa costuma estar à espera.</p>
+          <span class="margin-rule" aria-hidden="true"></span>
+          <span class="margin-mark" aria-hidden="true">∴</span>
+        </aside>
+      </section>
+
+      <section class="screen simple-sheet archive-screen" id="archiveScreen" hidden aria-labelledby="archiveTitle">
+        <div class="screen-head">
+          <button class="back-button" id="backFromArchive" type="button">← Menu inicial</button>
+          <span class="screen-index">Arquivo · 2026</span>
+        </div>
+        <div class="screen-copy">
+          <p class="home-kicker">As páginas que já passaram</p>
+          <h2 id="archiveTitle">Calendário<br /><em>de ditados</em></h2>
+          <p>Revê as adivinhas anteriores. A de hoje fica marcada a tinta.</p>
+        </div>
+        <div class="calendar" id="calendarGrid" aria-label="Calendário de adivinhas"></div>
+        <p class="archive-status" id="archiveStatus" aria-live="polite"></p>
+      </section>
+
+      <section class="screen simple-sheet settings-screen" id="settingsScreen" hidden aria-labelledby="settingsTitle">
+        <div class="screen-head">
+          <button class="back-button" id="backFromSettings" type="button">← Menu inicial</button>
+          <span class="screen-index">Preferências</span>
+        </div>
+        <div class="screen-copy">
+          <p class="home-kicker">A página ao teu gosto</p>
+          <h2 id="settingsTitle">Definições<br /><em>básicas</em></h2>
+          <p>Escolhe a aparência que acompanha melhor a tua leitura.</p>
+        </div>
+        <div class="theme-choice" role="group" aria-label="Escolher tema">
+          <button class="theme-button" data-theme="light" type="button"><span class="theme-swatch light-swatch"></span><span>Claro</span></button>
+          <button class="theme-button" data-theme="dark" type="button"><span class="theme-swatch dark-swatch"></span><span>Escuro</span></button>
+        </div>
+        <p class="settings-status" id="settingsStatus" role="status"></p>
+      </section>
+
+      <footer class="site-footer">
+        <a class="brand" href="#" id="brandHome" aria-label="Adivinha o Ditado — menu inicial">
+          <img src="/logo.png" alt="" class="brand-mark" width="48" height="48" />
+          <span class="brand-name"><b>Adivinha</b><em>o Ditado</em></span>
+        </a>
+        <p>Um jogo de língua portuguesa</p>
+      </footer>
+    </main>
+
+    <dialog class="support-dialog" id="supportDialog" aria-labelledby="supportTitle">
+      <button class="dialog-close" id="closeSupport" type="button" aria-label="Fechar">×</button>
+      <p class="home-kicker">Uma nota à margem</p>
+      <h2 id="supportTitle">Apoia esta<br /><em>pequena tradição.</em></h2>
+      <p>Obrigado pelo interesse em apoiar o projeto. O canal de donativos será ligado aqui quando estiver definido.</p>
+      <button class="menu-button" id="dialogDone" type="button">Fechar</button>
+    </dialog>
+
+    <script src="/script.js" defer></script>
+  </body>
+</html>
